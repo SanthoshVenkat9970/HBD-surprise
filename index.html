@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff0f4">
+  <meta name="description" content="Someone wrapped you a surprise. Untie the ribbon.">
+  <title>A Birthday Surprise</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <!-- Fonts: Grandstander (display), Fredoka (body), Caveat (handwriting), Noto Color Emoji -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fredoka:wght@400;500;600;700&family=Grandstander:wght@700;800;900&family=Noto+Color+Emoji&display=swap">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =========================================================
+       BACKGROUND: gradient wash, clouds, sprinkles, floaters
+       ========================================================= -->
+  <div class="bg" aria-hidden="true">
+    <svg class="cloud cloud--left" viewBox="0 0 420 230"><use href="#cloud-shape"/></svg>
+    <svg class="cloud cloud--right" viewBox="0 0 420 230"><use href="#cloud-shape"/></svg>
+    <canvas class="bg__sprinkles" id="ambient"></canvas>
+    <div class="floaters" id="floaters"></div>
+  </div>
+
+  <!-- Shared SVG definitions -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="cloud-shape">
+        <circle cx="120" cy="140" r="78"/>
+        <circle cx="210" cy="100" r="92"/>
+        <circle cx="300" cy="140" r="76"/>
+        <rect x="42" y="132" width="340" height="98" rx="49"/>
+      </g>
+      <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- =========================================================
+       CHROME: progress candles, back + replay, music toggle
+       ========================================================= -->
+  <header class="chrome">
+    <div class="progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="8" aria-valuenow="1" aria-label="Surprise progress"></div>
+    <nav class="navpill" aria-label="Navigation">
+      <button class="navpill__back" id="btnBack" type="button" aria-label="Go back" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="navpill__main" id="btnReplay" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2Q13.2 10.8 22 12Q13.2 13.2 12 22Q10.8 13.2 2 12Q10.8 10.8 12 2Z"/></svg>
+        <span>Replay</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- =========================================================
+       SCENES
+       ========================================================= -->
+  <main class="stage" id="stage">
+
+    <!-- 1 · GIFT (page1 → page1-1) -->
+    <section class="scene" id="scene-gift" data-step="1" aria-label="Your gift">
+      <div class="scene__inner">
+        <header class="head swap">
+          <div class="swap__a">
+            <p class="eyebrow rv">Psst, <span data-bind="name">Ambii</span>…</p>
+            <h1 class="title rv" tabindex="-1">Someone wrapped<br>you a <span class="accent">surprise</span></h1>
+            <p class="sub rv">untie the ribbon, birthday girl <span class="emoji">🎀</span></p>
+          </div>
+          <div class="swap__b" aria-hidden="true">
+            <p class="eyebrow">From <span data-bind="from">Santhosh</span>,</p>
+            <h2 class="title">Happy Birthday, <span class="accent" data-bind="nickname">Ambii</span>! <span class="emoji">🎉</span></h2>
+            <p class="sub">Today is all about you. Ready?</p>
+          </div>
+        </header>
+
+        <div class="gift-stage rv" id="giftStage">
+          <div class="gift-glow"></div>
+          <button class="gift" id="gift" type="button" aria-label="A wrapped gift. Tap it three times to open it.">
+            <span class="gift__photo"><img data-photo="surprise" alt="" draggable="false"></span>
+            <span class="gift__body">
+              <span class="gift__ribbon gift__ribbon--v"></span>
+              <span class="gift__ribbon gift__ribbon--h"></span>
+            </span>
+            <span class="gift__tag"><span class="gift__tag-card"><span class="gift__tag-text">To: <span data-bind="name">Ambii</span></span></span></span>
+            <span class="gift__lid"><span class="gift__ribbon gift__ribbon--v"></span></span>
+            <span class="gift__bow">
+              <svg viewBox="0 0 154 96" aria-hidden="true">
+                <g stroke="#c48f22" stroke-width="3.4" stroke-linejoin="round">
+                  <path d="M70 44 L53 90 L63 85 L69 95 L79 50 Z" fill="#f7c447"/>
+                  <path d="M84 44 L101 90 L91 85 L85 95 L75 50 Z" fill="#f7c447"/>
+                  <path d="M72 40 C58 14 30 4 14 12 C2 18 4 40 18 46 C32 52 56 48 72 44 Z" fill="#ffd95e"/>
+                  <path d="M82 40 C96 14 124 4 140 12 C152 18 150 40 136 46 C122 52 98 48 82 44 Z" fill="#ffd95e"/>
+                </g>
+                <path d="M66 40 C52 26 32 20 22 24 C16 28 18 36 26 38 C38 41 54 41 66 40Z" fill="#efb337" opacity=".55"/>
+                <path d="M88 40 C102 26 122 20 132 24 C138 28 136 36 128 38 C116 41 100 41 88 40Z" fill="#efb337" opacity=".55"/>
+                <path d="M24 17 C34 11 48 15 58 25" stroke="#fff4c4" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M130 17 C120 11 106 15 96 25" stroke="#fff4c4" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <rect x="65" y="29" width="24" height="23" rx="8" fill="#ffd95e" stroke="#c48f22" stroke-width="3.4"/>
+                <path d="M71 35 h9" stroke="#fff4c4" stroke-width="2.6" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <span class="gift__shadow"></span>
+        </div>
+
+        <div class="gift-foot">
+          <div class="gift-foot__closed">
+            <p class="hint rv">Tap the bow to untie it <span class="emoji">🎀</span></p>
+            <p class="tapcount" id="tapCount" aria-live="polite">
+              <span class="tapcount__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="tapcount__txt">Tap 0/3</span>
+            </p>
+          </div>
+          <div class="gift-foot__open">
+            <p class="hint hint--still">Surprise!! <span class="emoji">🥳</span></p>
+            <button class="cta" type="button" data-go="candles">
+              <span class="cta__icon emoji">🎂</span>
+              <span class="cta__label">Let’s celebrate</span>
+              <svg class="cta__chev" aria-hidden="true"><use href="#i-chev"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · LIGHT THE CANDLES (page2) -->
+    <section class="scene" id="scene-candles" data-step="2" aria-label="Light your candles">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Happy Birthday, <span data-bind="name">Ambii</span></p>
+          <h2 class="title rv" tabindex="-1">Light your candles</h2>
+          <p class="sub rv" aria-live="polite">Tap each candle to light it (<span id="litCount">0</span> of 5) <span class="emoji">🕯️</span></p>
+        </header>
+        <div class="cake cake--lg rv" id="cakeCandles"></div>
+        <button class="pill-btn rv" id="btnLightAll" type="button"><span class="emoji">🔥</span> Light them all</button>
+      </div>
+    </section>
+
+    <!-- 3 · MAKE A WISH (page2-2) -->
+    <section class="scene" id="scene-wish" data-step="3" aria-label="Make a wish">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Happy Birthday, <span data-bind="name">Ambii</span></p>
+          <h2 class="title rv" tabindex="-1"><span class="title__deco emoji">✨</span> Make a wish… <span class="emoji">🤫</span></h2>
+          <p class="sub rv">Close your eyes, wish for something big, then blow!</p>
+        </header>
+        <div class="cake cake--md rv" id="cakeWish"></div>
+        <button class="hold rv" id="btnBlow" type="button" aria-describedby="blowHelp">
+          <span class="hold__fill"></span>
+          <span class="hold__label"><span class="emoji">🌬️</span> <span id="blowLabel">Hold to blow</span></span>
+        </button>
+        <p class="visually-hidden" id="blowHelp">Press and hold the button until the candles go out.</p>
+      </div>
+    </section>
+
+    <!-- 4 · WISH SENT (page2-3) -->
+    <section class="scene" id="scene-wished" data-step="3" aria-label="Your wish is on its way">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Happy Birthday, <span data-bind="name">Ambii</span></p>
+          <h2 class="title rv" tabindex="-1">Your wish is on its way <span class="emoji">✨</span></h2>
+        </header>
+        <div class="cake cake--sm rv" id="cakeWished"></div>
+        <div class="note note--photo rv">
+          <span class="frame frame--tilt-l"><img data-photo="wish" alt="" draggable="false"></span>
+          <div class="note__text">
+            <p class="hand" data-bind="wishNote">Whatever you wished for, I hope I get to be there when it comes true ✨</p>
+            <p class="note__sign">— <span data-bind="from">Santhosh</span></p>
+          </div>
+        </div>
+        <button class="cta rv" type="button" data-go="cut">
+          <span class="cta__icon emoji">🍰</span>
+          <span class="cta__label">Cut the cake</span>
+          <svg class="cta__chev" aria-hidden="true"><use href="#i-chev"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 5 · CUT THE CAKE (page3) -->
+    <section class="scene" id="scene-cut" data-step="4" aria-label="Cut the cake">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Cake time</p>
+          <h2 class="title rv" tabindex="-1">Now cut the cake!</h2>
+          <p class="sub rv">Swipe across the cake, like a knife <span class="emoji">🔪</span></p>
+        </header>
+        <div class="cutzone rv" id="cutZone">
+          <div class="cutzone__layer" id="cutPlate"></div>
+          <div class="cutzone__layer cutzone__half cutzone__half--l" id="cutL"></div>
+          <div class="cutzone__layer cutzone__half cutzone__half--r" id="cutR"></div>
+          <svg class="cutzone__layer cutzone__guide" viewBox="0 0 480 410" aria-hidden="true"><line x1="240" y1="214" x2="240" y2="384"/></svg>
+          <div class="knife" id="knife" aria-hidden="true">
+            <svg viewBox="0 0 34 166">
+              <defs><linearGradient id="kblade" x1="0" x2="1"><stop offset="0" stop-color="#f4f6f9"/><stop offset=".55" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd5de"/></linearGradient></defs>
+              <rect x="4" y="2" width="26" height="62" rx="11" fill="#ec4f80" stroke="#c93a6a" stroke-width="2"/>
+              <rect x="9" y="7" width="5" height="50" rx="2.5" fill="#fff" opacity=".35"/>
+              <circle cx="17" cy="20" r="3.4" fill="#fff"/>
+              <circle cx="17" cy="42" r="3.4" fill="#fff"/>
+              <rect x="2" y="62" width="30" height="9" rx="3" fill="#bcc3ce" stroke="#97a0ae" stroke-width="1.5"/>
+              <path d="M6 71 H28 V140 Q28 158 12 165 Q6 156 6 140 Z" fill="url(#kblade)" stroke="#a9b1bd" stroke-width="1.5"/>
+              <path d="M22 75 V139 Q22 151 15 158" stroke="#fff" stroke-width="3" fill="none" opacity=".9"/>
+            </svg>
+          </div>
+        </div>
+        <button class="link-btn rv" id="btnCutTap" type="button">or tap here to cut it</button>
+      </div>
+    </section>
+
+    <!-- 6 · FIRST SLICE (page3-2) -->
+    <section class="scene" id="scene-slice" data-step="4" aria-label="The first slice is yours">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Cake time</p>
+          <h2 class="title rv" tabindex="-1">The first slice is yours <span class="emoji">🍰</span></h2>
+        </header>
+        <div class="slice rv" id="slice">
+          <svg viewBox="0 0 300 200" aria-hidden="true">
+            <defs>
+              <clipPath id="sliceFront"><path d="M64 98 L200 72 L200 124 L64 150 Z"/></clipPath>
+            </defs>
+            <ellipse cx="150" cy="166" rx="136" ry="26" fill="#f1bdd0"/>
+            <ellipse cx="150" cy="159" rx="134" ry="26" fill="#fff"/>
+            <ellipse cx="150" cy="156" rx="104" ry="17" fill="none" stroke="#fbd5e1" stroke-width="2.5"/>
+            <!-- right (outer) face -->
+            <path d="M200 72 L228 84 L228 136 L200 124 Z" fill="#f7b3c9"/>
+            <path d="M200 72 L228 84 L228 96 Q222 94 220 102 Q218 108 214 100 Q210 92 200 90 Z" fill="#ea4c7e"/>
+            <!-- front (cut) face, layered -->
+            <g clip-path="url(#sliceFront)">
+              <rect x="60" y="40" width="150" height="120" fill="#f8dba6"/>
+              <path d="M64 120 L200 94 L200 99 L64 125 Z" fill="#f5a3bd"/>
+              <path d="M64 126 L200 100 L200 104 L64 130 Z" fill="#fff"/>
+              <path d="M64 141 L200 115 L200 119 L64 145 Z" fill="#f5a3bd"/>
+              <path d="M64 98 L200 72 L200 84 L64 110 Z" fill="#ea4c7e"/>
+              <circle cx="84" cy="108" r="5" fill="#ea4c7e"/><rect x="79" y="104" width="10" height="11" fill="#ea4c7e"/>
+              <circle cx="118" cy="104" r="5" fill="#ea4c7e"/><rect x="113" y="96" width="10" height="13" fill="#ea4c7e"/>
+              <circle cx="146" cy="96" r="5" fill="#ea4c7e"/><rect x="141" y="90" width="10" height="9" fill="#ea4c7e"/>
+              <circle cx="178" cy="94" r="5" fill="#ea4c7e"/><rect x="173" y="84" width="10" height="13" fill="#ea4c7e"/>
+            </g>
+            <!-- top frosting -->
+            <path d="M62 97 L200 70 L229 83 Z" fill="#f0628f" stroke="#f0628f" stroke-width="5" stroke-linejoin="round"/>
+            <g stroke-linecap="round" stroke-width="3">
+              <path d="M150 80 l7 -2" stroke="#fff"/><path d="M176 77 l6 1" stroke="#ffd35c"/><path d="M200 77 l5 -3" stroke="#8fdcc0"/>
+              <path d="M128 86 l6 -3" stroke="#b9a2f5"/><path d="M104 90 l7 0" stroke="#fff"/><path d="M188 72 l4 4" stroke="#b9a2f5"/>
+              <path d="M214 80 l6 1" stroke="#fff"/><path d="M166 82 l5 -3" stroke="#ffd35c"/>
+            </g>
+            <!-- fork -->
+            <g transform="translate(232 70) rotate(-24)" stroke="#a9b1bd" stroke-linecap="round">
+              <path d="M0 22 L0 104" stroke-width="6" stroke="#c4cad3"/>
+              <path d="M-7 0 V18 M-2.5 0 V18 M2.5 0 V18 M7 0 V18" stroke-width="2.6"/>
+              <path d="M-8 16 Q0 30 8 16" stroke-width="3" fill="none"/>
+            </g>
+            <!-- heart -->
+            <path class="slice__heart" d="M150 52 C132 40 132 24 142 24 C147 24 150 28 150 31 C150 28 153 24 158 24 C168 24 168 40 150 52Z" fill="#ec4f80" stroke="#fff" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="note note--center rv"><p class="hand" data-bind="sliceNote">The first slice is always yours.
+So is the last one. So am I 🍰</p></div>
+        <button class="cta rv" type="button" data-go="balloons">
+          <span class="cta__icon emoji">🎈</span>
+          <span class="cta__label">Pop the balloons</span>
+          <svg class="cta__chev" aria-hidden="true"><use href="#i-chev"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 7 · POP THE BALLOONS (page4) -->
+    <section class="scene" id="scene-balloons" data-step="5" aria-label="Things I like about you">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Pop them, one by one</p>
+          <h2 class="title rv" tabindex="-1">Things I like about you</h2>
+          <p class="sub rv" aria-live="polite"><span id="popCount">0</span> of 5 popped</p>
+        </header>
+        <div class="bunch rv" id="bunch">
+          <span class="bunch__photo frame frame--tilt-r"><img data-photo="balloons" alt="" draggable="false"></span>
+        </div>
+        <div class="note note--center note--reason rv" aria-live="polite"><p class="hand" id="reasonText">Pop a balloon to find out <span class="emoji">💗</span></p></div>
+      </div>
+    </section>
+
+    <!-- 8 · ALL THE REASONS (page4-2) -->
+    <section class="scene" id="scene-reasons" data-step="5" aria-label="Every single one is true">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Pop them, one by one</p>
+          <h2 class="title rv" tabindex="-1">Things I like about you</h2>
+          <p class="sub rv">Every single one is true <span class="emoji">💗</span></p>
+        </header>
+        <div class="rv"><span class="frame frame--lg frame--tilt-l2"><img data-photo="reasons" alt="" draggable="false"></span></div>
+        <ul class="reasons rv" id="reasonList"></ul>
+        <button class="cta rv" type="button" data-go="card">
+          <span class="cta__icon emoji">💌</span>
+          <span class="cta__label">Read my letter</span>
+          <svg class="cta__chev" aria-hidden="true"><use href="#i-chev"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 9 · BIRTHDAY CARD (page6) -->
+    <section class="scene" id="scene-card" data-step="6" aria-label="I wrote you a birthday card">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">The real gift</p>
+          <h2 class="title rv" tabindex="-1">I wrote you a<br>birthday card</h2>
+          <p class="sub rv">Tap to open it <span class="emoji">💌</span></p>
+        </header>
+        <div class="rv">
+          <button class="bcard" id="bcard" type="button" aria-label="Open the birthday card">
+            <span class="bcard__tilt">
+              <span class="bcard__inside">
+                <span class="bcard__inside-text">Dear <span data-bind="nickname">Ambii</span>,</span>
+                <span class="bcard__inside-lines"></span>
+              </span>
+              <span class="bcard__cover">
+                <span class="bcard__front">
+                  <span class="bcard__cake emoji">🎂</span>
+                  <span class="bcard__title">Happy Birthday</span>
+                  <span class="bcard__for">for <span data-bind="name">Ambii</span></span>
+                </span>
+                <span class="bcard__back"></span>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · LETTER (page7) -->
+    <section class="scene" id="scene-letter" data-step="7" aria-label="Your letter">
+      <div class="scene__inner scene__inner--wide">
+        <header class="head">
+          <p class="eyebrow rv">The real gift</p>
+          <h2 class="title rv" tabindex="-1" id="letterGreeting">Dear Ambii,</h2>
+        </header>
+        <article class="letter rv">
+          <div class="letter__scroll" id="letterBody" tabindex="0" aria-label="Letter"></div>
+        </article>
+        <button class="cta rv" type="button" data-go="finale">
+          <span class="cta__icon emoji">💗</span>
+          <span class="cta__label">I read it</span>
+          <svg class="cta__chev" aria-hidden="true"><use href="#i-chev"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- 11 · FINALE (page8) -->
+    <section class="scene" id="scene-finale" data-step="8" aria-label="Best day ever">
+      <div class="scene__inner">
+        <header class="head">
+          <p class="eyebrow rv">Happy Birthday!</p>
+          <h2 class="title rv" tabindex="-1">Best day ever, <span data-bind="name">Ambii</span> <span class="emoji">🎂</span></h2>
+          <p class="sub rv">Save your crown, then tell <span data-bind="from">Santhosh</span>.</p>
+        </header>
+
+        <div class="rv">
+          <div class="bear" id="bear">
+            <svg viewBox="0 0 160 232" aria-hidden="true">
+              <defs><clipPath id="hatClip"><path d="M80 16 L105 70 Q80 79 55 70 Z"/></clipPath></defs>
+              <g stroke="#5b3426" stroke-width="4" stroke-linejoin="round">
+                <ellipse cx="55" cy="216" rx="17" ry="10" fill="#fff"/>
+                <ellipse cx="105" cy="216" rx="17" ry="10" fill="#fff"/>
+                <ellipse cx="80" cy="186" rx="40" ry="34" fill="#fff"/>
+                <circle cx="34" cy="78" r="17" fill="#fff"/>
+                <circle cx="126" cy="78" r="17" fill="#fff"/>
+                <ellipse cx="80" cy="114" rx="58" ry="50" fill="#fff"/>
+              </g>
+              <circle cx="34" cy="78" r="9" fill="#ffd0dc"/>
+              <circle cx="126" cy="78" r="9" fill="#ffd0dc"/>
+              <g class="bear__cake">
+                <rect x="61" y="172" width="38" height="22" rx="4" fill="#ffb3c8" stroke="#5b3426" stroke-width="3"/>
+                <path d="M61 180 q4.75 5 9.5 0 q4.75 5 9.5 0 q4.75 5 9.5 0 q4.75 5 9.5 0" fill="none" stroke="#fff" stroke-width="3"/>
+                <rect x="78.5" y="160" width="3" height="12" fill="#ffd35c" stroke="#5b3426" stroke-width="1.4"/>
+                <path class="bear__candle" d="M80 149 q4.5 5 0 10 q-4.5 -5 0 -10z" fill="#ffb02e"/>
+              </g>
+              <g stroke="#5b3426" stroke-width="3.5" fill="#fff">
+                <ellipse cx="57" cy="182" rx="10" ry="8"/>
+                <ellipse cx="103" cy="182" rx="10" ry="8"/>
+              </g>
+              <ellipse cx="45" cy="132" rx="11" ry="7" fill="#ffc2d1"/>
+              <ellipse cx="115" cy="132" rx="11" ry="7" fill="#ffc2d1"/>
+              <path class="bear__eye" d="M58 120 C46 112 46 102 52.5 102 C56 102 58 105 58 107 C58 105 60 102 63.5 102 C70 102 70 112 58 120Z" fill="#f0628f" stroke="#5b3426" stroke-width="2.5" stroke-linejoin="round"/>
+              <path class="bear__eye" d="M102 120 C90 112 90 102 96.5 102 C100 102 102 105 102 107 C102 105 104 102 107.5 102 C114 102 114 112 102 120Z" fill="#f0628f" stroke="#5b3426" stroke-width="2.5" stroke-linejoin="round"/>
+              <ellipse cx="80" cy="126" rx="6.5" ry="5" fill="#5b3426"/>
+              <path d="M70 135 Q80 149 90 135 Z" fill="#5b3426"/>
+              <path d="M75 141 Q80 146 85 141" fill="#ff8fab"/>
+              <g class="bear__hat">
+                <path d="M80 16 L105 70 Q80 79 55 70 Z" fill="#f0628f"/>
+                <g clip-path="url(#hatClip)" fill="#fff">
+                  <rect x="40" y="38" width="80" height="7" transform="rotate(-10 80 41)"/>
+                  <rect x="40" y="56" width="80" height="7" transform="rotate(-10 80 59)"/>
+                </g>
+                <path d="M80 16 L105 70 Q80 79 55 70 Z" fill="none" stroke="#5b3426" stroke-width="3.5" stroke-linejoin="round"/>
+                <circle cx="80" cy="14" r="8" fill="#ffd35c" stroke="#5b3426" stroke-width="3"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="crown rv">
+          <span class="crown__icon emoji">👑</span>
+          <span class="crown__body">
+            <span class="crown__title">Birthday Queen</span>
+            <span class="crown__meta"><span data-bind="name">Ambii</span> · <span data-bind="age">23</span> today · <span id="crownDate"></span></span>
+          </span>
+        </div>
+
+        <div class="finale-actions rv">
+          <button class="cta" id="btnSaveCrown" type="button">
+            <span class="cta__icon emoji">👑</span>
+            <span class="cta__label">Save my crown</span>
+            <svg class="cta__chev" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+          <button class="pill-btn" id="btnTell" type="button"><span class="emoji">💌</span> Tell <span data-bind="from">Santhosh</span></button>
+        </div>
+        <button class="link-btn rv" type="button" data-replay>↻ Replay the surprise</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Music toggle -->
+  <button class="music" id="btnMusic" type="button" aria-label="Play music" aria-pressed="false">
+    <svg class="music__off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path d="M3 3l18 18"/></svg>
+    <svg class="music__on" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+  </button>
+
+  <!-- FX canvas (confetti, fireworks, sparkles, hearts) -->
+  <canvas class="fx" id="fx" aria-hidden="true"></canvas>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript><p class="noscript">This birthday surprise needs JavaScript turned on 🎁</p></noscript>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

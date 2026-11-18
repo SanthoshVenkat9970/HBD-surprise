@@ -1,0 +1,11 @@
+# Local tooling — never publish
+.claude/
+.mcp.json
+
+# Design reference screenshots (not used by the site)
+page*.png
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
